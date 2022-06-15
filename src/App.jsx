@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Route, Routes, Link } from "react-router-dom";
 import LoginComponent from "./component/LoginComponent";
 import MainComponent from "./component/MainComponent";
 import PostUpload from "./component/PostUpload";
+import { clearUser } from "./component/reducer/userSlice";
 
 export default function App() {
   const user = useSelector((state) => state.userSlice);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(user);
@@ -23,6 +25,15 @@ export default function App() {
         </li>
         <li>
           <Link to="/upload">Upload</Link>
+        </li>
+        <li>
+          <button
+            onClick={() => {
+              dispatch(clearUser());
+            }}
+          >
+            로그아웃
+          </button>
         </li>
       </ul>
       <Routes>

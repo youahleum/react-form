@@ -1,17 +1,38 @@
+import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthCheck from "./hoc/AuthCheck";
 import { RequiredLogin } from "./hoc/userType";
 
 function PostUpload(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const navigate = useNavigate();
+
   const SubmitFunc = (e) => {
     e.preventDefalut();
+    if (!(title && content)) {
+      return alert("값 다 채우시길 바랍니다");
+    } else {
+      console.log("??");
+    }
     let body = {
       title,
       content,
       userId: props.user.id,
     };
+    axios
+      .post("https://st-fe34.herokuapp.com/api/post/submit", body)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        if (res.data.success) {
+          alert("게시글 등록 성공!");
+          navigate("/");
+        } else {
+          alert("게시글 등록 실패");
+        }
+      });
   };
   return (
     <>
@@ -37,7 +58,7 @@ function PostUpload(props) {
         <br />
         <br />
         <button>취소</button>
-        <button>제출</button>
+        <button type="submit">제출</button>
       </form>
     </>
   );
